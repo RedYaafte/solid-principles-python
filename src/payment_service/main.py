@@ -4,7 +4,7 @@ from processors import StripePaymentProcessor
 from service import PaymentService
 from validators import CustomerValidator, PaymentDataValidator
 
-from commons import CustomerData, ContactInfo
+from commons import CustomerData, ContactInfo, PaymentData
 
 
 def get_email_notifier() -> EmailNotifier:
@@ -44,17 +44,26 @@ if __name__ == "__main__":
     payment_data_validator = PaymentDataValidator()
     logger = TransactionLogger()
 
-    service = PaymentService(
-        payment_processor=stripe_payment_processor,
+    payment_data = PaymentData(amount=100, source="tok_visa", currency="MXN")
+    service = PaymentService.create_with_payment_processor(
+        payment_data=payment_data,
         notifier=notifier,
         customer_validator=customer_validator,
         payment_validator=payment_data_validator,
         logger=logger,
     )
-    print("Service:", service)
 
-    # Cambio de estrategia de notificación a estrategia de email.
-    service._set_notifier(email_notifier)
+    # service = PaymentService(
+    #     payment_processor=stripe_payment_processor,
+    #     notifier=notifier,
+    #     customer_validator=customer_validator,
+    #     payment_validator=payment_data_validator,
+    #     logger=logger,
+    # )
+    # print("Service:", service)
 
-    # Cambiar la estrategia a la estrategia de sms
-    service._set_notifier(sms_notifier)
+    # # Cambio de estrategia de notificación a estrategia de email.
+    # service._set_notifier(email_notifier)
+
+    # # Cambiar la estrategia a la estrategia de sms
+    # service._set_notifier(sms_notifier)
