@@ -23,6 +23,12 @@ class PaymentService:
     recurring_processor: Optional[RecurringPaymentProcessorProtocol] = None
     refund_processor: Optional[RefundProcessorProtocol] = None
 
+    def _set_notifier(self, notifier: NotifierProtocol):
+        """Se cambia en tiempo de ejecución la estrategia con la que se va a enviar
+        la notificación."""
+        print("Changing the notifier implementation")
+        self.notifier = notifier
+
     def process_transaction(
         self, customer_data: CustomerData, payment_data: PaymentData
     ) -> PaymentResponse:
