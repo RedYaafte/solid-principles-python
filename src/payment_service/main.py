@@ -6,6 +6,8 @@ from validators import CustomerValidator, PaymentDataValidator
 
 from commons import CustomerData, ContactInfo, PaymentData
 
+from logging_service import PaymentServiceLogging
+
 
 def get_email_notifier() -> EmailNotifier:
     return EmailNotifier()
@@ -52,6 +54,9 @@ if __name__ == "__main__":
         payment_validator=payment_data_validator,
         logger=logger,
     )
+
+    logging_service = PaymentServiceLogging(wrapped=service)
+    logging_service.process_refund(transaction_id="1234567890")
 
     # service = PaymentService(
     #     payment_processor=stripe_payment_processor,
