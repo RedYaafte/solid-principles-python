@@ -4,18 +4,18 @@ import stripe
 from dotenv import load_dotenv
 from stripe.error import StripeError  # type: ignore
 
-from payment_service.commons import CustomerData, PaymentData, PaymentResponse
+from commons import CustomerData, PaymentData, PaymentResponse
 
 from .payment import PaymentProcessorProtocol
-from .recurring import RecurringPaymentProtocol
-from .refunds import RefundPaymentProtocol
+from .recurring import RecurringPaymentProcessorProtocol
+from .refunds import RefundProcessorProtocol
 
 
 _ = load_dotenv()
 
 
 class StripePaymentProcessor(
-    PaymentProcessorProtocol, RefundPaymentProtocol, RecurringPaymentProtocol
+    PaymentProcessorProtocol, RefundProcessorProtocol, RecurringPaymentProcessorProtocol
 ):
     def process_transaction(
         self, customer_data: CustomerData, payment_data: PaymentData

@@ -3,13 +3,13 @@ from dataclasses import dataclass
 from typing import Optional
 
 from notifiers import NotifierProtocol
-from loggers.transaction import TransactionLogger
+from loggrs import TransactionLogger
 from commons import CustomerData, PaymentData, PaymentResponse
 from validators import CustomerValidator, PaymentDataValidator
 from processors import (
     PaymentProcessorProtocol,
-    RecurringPaymentProtocol,
-    RefundPaymentProtocol,
+    RecurringPaymentProcessorProtocol,
+    RefundProcessorProtocol,
 )
 
 
@@ -20,8 +20,8 @@ class PaymentService:
     customer_validator: CustomerValidator
     payment_validator: PaymentDataValidator
     logger: TransactionLogger
-    recurring_processor: Optional[RecurringPaymentProtocol] = None
-    refund_processor: Optional[RefundPaymentProtocol] = None
+    recurring_processor: Optional[RecurringPaymentProcessorProtocol] = None
+    refund_processor: Optional[RefundProcessorProtocol] = None
 
     def process_transaction(
         self, customer_data: CustomerData, payment_data: PaymentData

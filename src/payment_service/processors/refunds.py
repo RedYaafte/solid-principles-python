@@ -1,7 +1,7 @@
 from typing import Protocol
 
-from payment_service.commons import PaymentResponse
+from commons import PaymentResponse
 
 
-class RefundPaymentProtocol(Protocol):
+class RefundProcessorProtocol(Protocol):
     def refund_payment(self, transaction_id: str) -> PaymentResponse: ...

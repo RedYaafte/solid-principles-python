@@ -1,8 +1,8 @@
-from .loggers.transaction import TransactionLogger
-from .notifiers import EmailNotifier
-from .processors import StripePaymentProcessor
-from .service import PaymentService
-from .validators import CustomerValidator, PaymentDataValidator
+from loggrs import TransactionLogger
+from notifiers import EmailNotifier
+from processors import StripePaymentProcessor
+from service import PaymentService
+from validators import CustomerValidator, PaymentDataValidator
 
 
 if __name__ == "__main__":
@@ -19,3 +19,5 @@ if __name__ == "__main__":
         payment_validator=payment_data_validator,
         logger=logger,
     )
+
+    print("Service:", service)
