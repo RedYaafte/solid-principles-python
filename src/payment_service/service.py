@@ -4,7 +4,7 @@ from typing import Optional, Self
 
 from notifiers import NotifierProtocol
 from loggrs import TransactionLogger
-from commons import CustomerData, PaymentData, PaymentResponse
+from commons import CustomerData, PaymentData, PaymentResponse, Request
 from validators import CustomerValidator, PaymentDataValidator
 from factory import PaymentProcessorFactory
 from processors import (
@@ -15,14 +15,16 @@ from processors import (
 
 from service_protocol import PaymentServiceProtocol
 from listeners import ListenersManager
+from validators import ChainHandler
 
 
 @dataclass
 class PaymentService(PaymentServiceProtocol):
     payment_processor: PaymentProcessorProtocol
     notifier: NotifierProtocol
-    customer_validator: CustomerValidator
-    payment_validator: PaymentDataValidator
+    validators: ChainHandler
+    # customer_validator: CustomerValidator
+    # payment_validator: PaymentDataValidator
     logger: TransactionLogger
     listeners: ListenersManager
     recurring_processor: Optional[RecurringPaymentProcessorProtocol] = None
@@ -48,8 +50,16 @@ class PaymentService(PaymentServiceProtocol):
     def process_transaction(
         self, customer_data: CustomerData, payment_data: PaymentData
     ) -> PaymentResponse:
-        self.customer_validator.validate(customer_data)
-        self.payment_validator.validate(payment_data)
+        # self.customer_validator.validate(customer_data)
+        # self.payment_validator.validate(payment_data)
+
+        try:
+            request = Request(customer_data=customer_data, payment_data=payment_data)
+            self.validators.handle(request=request)
+        except Exception as e:
+            print(f"Error en las validaciones. {e}")
+            raise e
+
         payment_response = self.payment_processor.process_transaction(
             customer_data, payment_data
         )

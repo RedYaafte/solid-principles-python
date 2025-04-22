@@ -51,12 +51,13 @@ if __name__ == "__main__":
     builder = PaymentServiceBuilder()
     service = (
         builder.set_logger()
-        # .set_payment_validator()
-        .set_customer_validator()
         .set_payment_processor(payment_data)
+        .set_chain_of_validations()
         .set_notifier(customer_data)
+        .set_listeners()
         .build()
     )
+    service.process_transaction(customer_data, payment_data)
 
     # service = PaymentService.create_with_payment_processor(
     #     payment_data=payment_data,
