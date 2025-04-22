@@ -9,6 +9,7 @@ from processors import (
     RecurringPaymentProcessorProtocol,
     RefundProcessorProtocol,
 )
+from listeners import ListenersManager
 
 
 class PaymentServiceProtocol(Protocol):
@@ -17,6 +18,7 @@ class PaymentServiceProtocol(Protocol):
     customer_validator: CustomerValidator
     payment_validator: PaymentDataValidator
     logger: TransactionLogger
+    listeners: ListenersManager
     recurring_processor: Optional[RecurringPaymentProcessorProtocol] = None
     refund_processor: Optional[RefundProcessorProtocol] = None
 
